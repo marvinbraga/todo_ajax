@@ -14,8 +14,8 @@ $(document).ready(function(){
             success: function(response) {
                 $("#taskList").append(
                 '<div class="card mb-1" id="taskCard" data-id="' + response.task.id + '"><div class="card-body">' +
-                response.task.title +'<button type="button" class="close float-right"><span aria-hidden="true">' +
-                '&times;</span></button></div></div>')
+                response.task.title +'<button type="button" class="close float-right" data-id=" ' + response.task.id +
+                '"><span aria-hidden="true">&times;</span></button></div></div>')
             }
         });
         form[0].reset();
@@ -31,12 +31,27 @@ $(document).ready(function(){
             },
             type: 'post',
             success: function() {
-                console.log(dataId);
                 var cardItem = $('#taskCard[data-id="' + dataId + '"]');
                 cardItem.css('text-decoration', 'line-through').hide().slideDown();
                 $("#taskList").append(cardItem);
-                console.log(cardItem);
+            }
+        });
+    }).on('click', 'button.close', function(event) {
+        event.stopPropagation();
+        var dataId = $(this).data('id');
+        $.ajax({
+            url: '/tasks/' + dataId + '/delete/',
+            data: {
+                csrfmiddlewaretoken: csrfToken,
+                id: dataId
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function() {
+                var cardItem = $('#taskCard[data-id="' + dataId + '"]');
+                cardItem.remove();
             }
         });
     });
+
 });

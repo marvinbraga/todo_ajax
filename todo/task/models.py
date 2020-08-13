@@ -12,3 +12,6 @@ class Task(models.Model):
         return self.title
 
     objects = TaskManager()
+
+    class Meta:
+        ordering = ['completed', 'date', 'title']
