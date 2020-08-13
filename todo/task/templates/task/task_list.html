@@ -20,7 +20,10 @@
 </div>
 <div class="col-5 mt-5" id="taskList">
     {% for task in tasks %}
-    <div class="card mb-1">
+    <div class="card mb-1"
+         id="taskCard"
+         style="{% if task.completed %} text-decoration: line-through {% endif %}"
+         data-id="{{ task.id }}">
         <div class="card-body">
             {{ task.title }}
             <button type="button" class="close float-right">
